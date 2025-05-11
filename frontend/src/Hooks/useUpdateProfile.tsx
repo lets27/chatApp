@@ -5,6 +5,8 @@ import useUserContext from "../context/useUser";
 const useUpdateProfile = () => {
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState("");
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
   const updateProfile = async (formData: FormData) => {
     setUpdating(true);
@@ -14,7 +16,7 @@ const useUpdateProfile = () => {
       const token = localStorage.getItem("chatToke");
       if (!token) throw new Error("Authentication required");
 
-      const res = await fetch("http://localhost:3000/api/official", {
+      const res = await fetch(`${baseUrl}/api/official`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

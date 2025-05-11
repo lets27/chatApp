@@ -7,9 +7,11 @@ import { useSocket } from "../context/useSocket";
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const { setUser } = useUserContext();
   const { connectSocket, disconnectSocket, socket } = useSocket();
+
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ const useLogin = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch(`${baseUrl}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

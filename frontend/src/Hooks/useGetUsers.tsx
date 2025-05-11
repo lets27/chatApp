@@ -8,6 +8,8 @@ const useGetUsers = () => {
   const [error, setError] = useState("");
   const [users, setUsers] = useState([]);
   const { setUser } = useUserContext();
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
   useEffect(() => {
     setLoadingUsers(true);
@@ -23,7 +25,7 @@ const useGetUsers = () => {
 
     const getUsers = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/official/`, {
+        const res = await fetch(`${baseUrl}/api/official`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

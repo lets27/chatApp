@@ -13,6 +13,9 @@ const useSendMessages = () => {
   const { selectedUser } = useSelectedUser();
   const { setMessages } = useMessageContext();
 
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+
   const selectedUserId = selectedUser._id;
   useEffect(() => {
     if (!socket) return;
@@ -49,17 +52,14 @@ const useSendMessages = () => {
         return;
       }
 
-      const data = await fetch(
-        `http://localhost:3000/api/official/message/${id}`,
-        {
-          mode: "cors",
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: submitData,
-        }
-      );
+      const data = await fetch(`${baseUrl}/api/official/message/${id}`, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: submitData,
+      });
 
       if (![200, 201].includes(data.status)) {
         const err = await data.json();

@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
   const signup = async (formData: FormData) => {
     //come back to this when data is back/// we changed to set the incoming
@@ -16,7 +18,7 @@ const useSignup = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
+      const res = await fetch(`${baseUrl}/api/auth/signup`, {
         method: "POST",
         body: formData, // do NOT stringify!
       });

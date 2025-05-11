@@ -10,6 +10,9 @@ const useMessages = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+
   // Fetch initial messages
   const getMessages = async (selectedUserId) => {
     try {
@@ -17,12 +20,9 @@ const useMessages = () => {
       const token = localStorage.getItem("chatToke");
       if (!token) throw new Error("Not authenticated");
 
-      const res = await fetch(
-        `http://localhost:3000/api/official/${selectedUserId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`${baseUrl}/api/official/${selectedUserId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (!res.ok) throw new Error("Failed to get messages");
 
@@ -76,4 +76,5 @@ function isRelevantMessage(message, selectedUserId, currentUserId) {
       message.senderId === currentUserId)
   );
 }
+
 export default useMessages;

@@ -9,6 +9,8 @@ const UserContextProvider = ({ children }: Children) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const baseUrl =
+    import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
   useEffect(() => {
     const token = localStorage.getItem("chatToke");
@@ -18,14 +20,11 @@ const UserContextProvider = ({ children }: Children) => {
     } else {
       const fetchUser = async () => {
         try {
-          const fetchUser = await fetch(
-            "http://localhost:3000/api/official/user",
-            {
-              mode: "cors",
-              method: "GET",
-              headers: { authorization: `Bearer ${token}` },
-            }
-          );
+          const fetchUser = await fetch(`${baseUrl}/api/official/use`, {
+            mode: "cors",
+            method: "GET",
+            headers: { authorization: `Bearer ${token}` },
+          });
 
           if (!fetchUser.ok) {
             throw new Error("something went wrong try again");
